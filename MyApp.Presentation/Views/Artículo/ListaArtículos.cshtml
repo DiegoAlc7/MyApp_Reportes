@@ -1,0 +1,113 @@
+﻿@model IEnumerable<MyApp.Entities.Artículo>
+
+@{
+    ViewData["Title"] = "Lista de Artículos";
+}
+
+<div class="row mt-5">
+    <div class="col">
+        <h3 class="mb-4">Lista de Artículos</h3>
+
+        <!-- Filtros -->
+        <div class="mb-3">
+            <form method="get" action="/Artículo/ListaArtículos">
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="búsqueda" placeholder="Buscar por nombre o código" value="@ViewBag.Búsqueda" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="categoría" placeholder="Filtrar por categoría" value="@ViewBag.Categoría" />
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="estado">
+                            <option value="">Todos los estados</option>
+                            <option value="Disponible" selected="@(ViewBag.Estado == "Disponible")">Disponible</option>
+                            <option value="Reservado" selected="@(ViewBag.Estado == "Reservado")">Reservado</option>
+                            <option value="En Uso" selected="@(ViewBag.Estado == "En Uso")">En Uso</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @if (User.IsInRole("Administrador"))
+        {
+            <!-- Botón para Crear Artículo -->
+            <div>
+                <a href="/Artículo/Crear" class="btn btn-success">Nuevo Artículo</a>
+            </div>
+            <p></p>
+        }
+        <!-- Tabla de artículos -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Estado</th>
+                    <th>Ubicación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var artículo in Model)
+                    {
+                        <tr>
+                            <td>@artículo.Código</td>
+                            <td>@artículo.Nombre</td>
+                            <td>@artículo.Categoría</td>
+                            <td>
+                                @if (artículo.Estado == "Disponible")
+                                {
+                                    <span class="badge bg-success">@artículo.Estado</span>
+                                }
+                                else if (artículo.Estado == "Reservado")
+                                {
+                                    <span class="badge bg-warning text-dark">@artículo.Estado</span>
+                                }
+                                else if (artículo.Estado == "En Uso")
+                                {
+                                    <span class="badge bg-primary">@artículo.Estado</span>
+                                }
+                            </td>
+                            <td>@artículo.Ubicación</td>
+                            <td>
+                                @if (User.IsInRole("Administrador"))
+                                {
+                                    <a href="/Artículo/Editar/@artículo.Id" class="btn btn-sm btn-warning">Editar</a>
+                                    <form method="post" action="/Artículo/Eliminar/@artículo.Id" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este artículo?')">Eliminar</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">No se encontraron artículos.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <nav aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPáginas; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PáginaActual ? "active" : "")">
+                        <a class="page-link" href="/Artículo/ListaArtículos?búsqueda=@ViewBag.Búsqueda&categoría=@ViewBag.Categoría&estado=@ViewBag.Estado&página=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>

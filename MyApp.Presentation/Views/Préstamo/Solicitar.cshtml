@@ -1,0 +1,34 @@
+﻿@model IEnumerable<MyApp.Entities.Artículo>
+
+@{
+    ViewData["Title"] = "Solicitar Préstamo";
+}
+
+<h3 class="mb-4">Solicitar Préstamo</h3>
+<p></p>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form method="post" action="/Préstamo/Solicitar">
+    <div class="mb-3">
+        <label for="artículoId" class="form-label">Selecciona un Artículo:</label>
+        <select class="form-select" id="artículoId" name="artículoId" required>
+            <option value="">-- Selecciona un Artículo --</option>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var artículo in Model)
+                {
+                    <option value="@artículo.Id">@artículo.Nombre (@artículo.Categoría)</option>
+                }
+            }
+            else
+            {
+                <option value="" disabled>No hay artículos disponibles</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Solicitar Préstamo</button>
+</form>

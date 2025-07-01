@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sistema de Inventario</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyApp.Presentation.styles.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #1f2d3d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: var(--primary);
+            padding: 0.8rem 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #fff !important;
+        }
+
+        .nav-link {
+            color: #ddd !important;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 4px;
+        }
+
+            .nav-link:hover,
+            .nav-item.active .nav-link {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: #fff !important;
+            }
+
+        .user-greeting {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            color: #fff;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        footer.footer {
+            background-color: var(--primary);
+            color: #ccc;
+            padding: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .footer a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+            .footer a:hover {
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+        @if (User.Identity.IsAuthenticated)
+         {
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <i class="fas fa-boxes me-2"></i> Sistema de Inventario
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Index">
+                                    <i class="fas fa-home me-1"></i>Inicio
+                                </a>
+                            </li>
+
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Usuario/ListaUsuarios">
+                                        <i class="fas fa-users me-1"></i>Usuarios
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Operador"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Artículo/ListaArtículos">
+                                        <i class="fas fa-box-open me-1"></i>Artículos
+                                    </a>
+                                </li>
+                            }
+                           
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Préstamo/ListaPréstamos">
+                                        <i class="fas fa-exchange-alt me-1"></i>Préstamos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="/Reporte/Index">
+                                        <i class="fas fa-file-alt me-1"></i>Reportes
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Operador"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Préstamo/Historial">
+                                        <i class="fas fa-history me-1"></i>Mis Préstamos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Préstamo/Solicitar">
+                                        <i class="fas fa-hand-holding me-1"></i>Solicitar Préstamo
+                                    </a>
+                                </li>
+                            }
+                        
+                             </ul>
+
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <span class="nav-link user-greeting">
+                                    <i class="fas fa-user-circle me-1"></i> @User.Identity.Name
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" asp-controller="Login" asp-action="Logout">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                        
+                </div>
+                </div>
+            </nav>
+        </header>
+    }
+
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <footer class="footer mt-auto">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div>
+                    &copy; 2025 Sistema de Inventario. Todos los derechos reservados.
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a> |
+                    <a href="#">Términos</a> |
+                    <a href="#">Soporte</a>
+                </div>
+            </div>
+        </footer>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

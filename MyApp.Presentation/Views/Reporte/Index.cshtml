@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Generar Reporte de Artículos";
+}
+
+<h3 class="mb-4">Generar Reporte de Artículos</h3>
+
+<div class="card">
+    <div class="card-body">
+        <p>Esta opción permite generar un reporte en PDF con el listado de todos los artículos disponibles en el sistema.</p>
+
+        <!-- Botón para descargar el reporte en PDF -->
+        <form method="get" action="/Reporte/ExportarPDF" class="mb-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-file-pdf"></i> Descargar Reporte en PDF
+            </button>
+        </form>
+        <p>Esta opción permite generar un reporte en Excel con el listado de prestamos </p>
+        <!-- Botón para descargar el reporte en Excel -->
+        <form method="get" action="/Reporte/ExportarExcel">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-file-excel"></i> Descargar Reporte en Excel
+            </button>
+        </form>
+    </div>
+</div>

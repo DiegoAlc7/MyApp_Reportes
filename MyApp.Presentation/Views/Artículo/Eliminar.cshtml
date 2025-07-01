@@ -1,0 +1,34 @@
+﻿@model MyApp.Entities.Artículo
+
+@{
+    ViewData["Title"] = "Eliminar Artículo";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="text-center mb-4">Confirmar Eliminación</h3>
+
+                <p>¿Está seguro de que desea eliminar el siguiente artículo?</p>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item"><strong>Código:</strong> @Model.Código</li>
+                    <li class="list-group-item"><strong>Nombre:</strong> @Model.Nombre</li>
+                    <li class="list-group-item"><strong>Categoría:</strong> @Model.Categoría</li>
+                    <li class="list-group-item"><strong>Estado:</strong> @Model.Estado</li>
+                    <li class="list-group-item"><strong>Ubicación:</strong> @Model.Ubicación</li>
+                </ul>
+
+                <form method="post" action="/Artículo/Eliminar/@Model.Id">
+                    <button type="submit" class="btn btn-danger w-100">Eliminar</button>
+                    <a href="/Artículo/ListaArtículos" class="btn btn-secondary w-100 mt-2">Cancelar</a>
+                </form>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

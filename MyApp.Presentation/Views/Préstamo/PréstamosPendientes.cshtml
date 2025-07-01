@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MyApp.Entities.Préstamo>
+
+@{
+    ViewData["Title"] = "Préstamos Pendientes";
+}
+
+<h3 class="mb-4">Préstamos Pendientes</h3>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Usuario</th>
+            <th>Artículo</th>
+            <th>Fecha de Solicitud</th>
+            <th>Fecha de Entrega</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var préstamo in Model)
+            {
+                <tr>
+                    <td>@préstamo.Usuario.Nombre</td>
+                    <td>@préstamo.Artículo.Nombre</td>
+                    <td>@préstamo.FechaSolicitud.ToShortDateString()</td>
+                    <td>@(préstamo.FechaRespuesta?.ToShortDateString() ?? "No especificada")</td>
+                    <td>
+                        <form method="post" action="/Préstamo/Aprobar" style="display:inline;">
+                            <input type="hidden" name="préstamoId" value="@préstamo.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Aprobar</button>
+                        </form>
+                        <form method="post" action="/Préstamo/Rechazar" style="display:inline;">
+                            <input type="hidden" name="préstamoId" value="@préstamo.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Rechazar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay préstamos pendientes.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Home/Index" class="btn btn-secondary">Volver al Inicio</a>

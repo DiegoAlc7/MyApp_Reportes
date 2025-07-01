@@ -1,0 +1,72 @@
+﻿@model MyApp.Entities.Artículo
+
+@{
+    ViewData["Title"] = "Editar Artículo";
+}
+
+@if (Model == null)
+{
+    <div class="alert alert-danger mt-5">
+        El artículo no fue encontrado.
+    </div>
+}
+else
+{
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Editar Artículo</h3>
+
+                    <form method="post" action="/Artículo/Editar/@Model.Id">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <!-- Código (solo lectura) -->
+                        <div class="mb-3">
+                            <label for="código" class="form-label">Código:</label>
+                            <input type="text" class="form-control" id="código" name="código" value="@Model.Código" readonly />
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="@Model.Nombre" required />
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="mb-3">
+                            <label for="categoría" class="form-label">Categoría:</label>
+                            <input type="text" class="form-control" id="categoría" name="categoría" value="@Model.Categoría" required />
+                        </div>
+
+                        <!-- Estado (solo lectura) -->
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <input type="text" class="form-control" id="estado" name="estado" value="@Model.Estado" readonly />
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="mb-3">
+                            <label for="ubicación" class="form-label">Ubicación:</label>
+                            <input type="text" class="form-control" id="ubicación" name="ubicación" value="@Model.Ubicación" required />
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <button type="submit" class="btn btn-warning w-100">Actualizar Artículo</button>
+
+                        <!-- Mensajes de error o éxito -->
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+                        }
+
+                        @if (ViewBag.Mensaje != null)
+                        {
+                            <div class="alert alert-success mt-3">@ViewBag.Mensaje</div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

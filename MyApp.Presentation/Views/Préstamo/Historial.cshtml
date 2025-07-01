@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MyApp.Entities.Préstamo>
+
+@{
+    ViewData["Title"] = "Historial de Préstamos";
+}
+<p></p>
+<h3 class="mb-4">Mi Historial de Préstamos</h3>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Artículo</th>
+            <th>Fecha de Solicitud</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var préstamo in Model)
+            {
+                <tr>
+                    <td>@préstamo.Artículo.Nombre</td>
+                    <td>@préstamo.FechaSolicitud.ToShortDateString()</td>
+                    <td>
+                        @if (préstamo.Estado == "Pendiente")
+                        {
+                            <span class="badge bg-warning text-dark">@préstamo.Estado</span>
+                        }
+                        else if (préstamo.Estado == "Aprobado")
+                        {
+                            <span class="badge bg-success">@préstamo.Estado</span>
+                        }
+                        else if (préstamo.Estado == "Rechazado")
+                        {
+                            <span class="badge bg-danger">@préstamo.Estado</span>
+                        }
+                        else if (préstamo.Estado == "Devuelto")
+                        {
+                            <span class="badge bg-primary">@préstamo.Estado</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No hay préstamos en tu historial.</td>
+            </tr>
+        }
+    </tbody>
+</table>
