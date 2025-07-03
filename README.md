@@ -1,5 +1,5 @@
 # Sistema de Inventario
-Este proyecto esta diseñado para gestionar el inventario de una empresa y generar reportes de inventarios. A continuación, se detallan los pasos para configurar y utilizar la aplicación web.
+Este proyecto esta diseñado para gestionar el inventario de una empresa y generar reportes. A continuación, se detallan los pasos para configurar y utilizar la aplicación web.
 
 ## **Instrucciones de Uso**
 
